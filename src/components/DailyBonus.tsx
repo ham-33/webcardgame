@@ -37,7 +37,7 @@ export function DailyBonusModal({ onClose }: { onClose: () => void }) {
           <div className="daily-glow">🎁</div>
           <h2>デイリーボーナス</h2>
           <p className="daily-sub">
-            毎日ログインしてコインをゲット！連続ログインでボーナスUP
+            毎日ログインしてジェムをゲット！連続ログインでボーナスUP
           </p>
         </div>
 
@@ -58,7 +58,7 @@ export function DailyBonusModal({ onClose }: { onClose: () => void }) {
                 <span className="streak-day">
                   {day === DAILY_STREAK_CAP ? `${day}日+` : `${day}日`}
                 </span>
-                <span className="streak-coin">🪙</span>
+                <span className="streak-coin">💎</span>
                 <span className="streak-amt">{bonusForStreak(day)}</span>
               </div>
             );
@@ -67,7 +67,7 @@ export function DailyBonusModal({ onClose }: { onClose: () => void }) {
 
         {claimed > 0 ? (
           <div className="claim-result">
-            <span className="claim-burst">+{claimed.toLocaleString()} 🪙</span>
+            <span className="claim-burst">+{claimed.toLocaleString()} 💎</span>
             <p>また明日も来てね！連続 {nextStreak} 日目</p>
             <button className="btn btn-gold" onClick={onClose}>
               プレイする
@@ -75,7 +75,7 @@ export function DailyBonusModal({ onClose }: { onClose: () => void }) {
           </div>
         ) : claimable ? (
           <button className="btn btn-gold btn-claim" onClick={handleClaim}>
-            🪙 {bonusForStreak(nextStreak).toLocaleString()} コイン受け取る
+            💎 {bonusForStreak(nextStreak).toLocaleString()} ジェム受け取る
           </button>
         ) : (
           <div className="claim-result">

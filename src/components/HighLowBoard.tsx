@@ -93,7 +93,7 @@ export function HighLowBoard({ G, moves }: Props) {
                 onClick={() => moves.cashout()}
               >
                 💰 キャッシュアウト{" "}
-                {G.streak >= 1 && `+${potential.toLocaleString()} 🪙`}
+                {G.streak >= 1 && `+${potential.toLocaleString()} 💎`}
               </button>
             </>
           ) : (
@@ -106,7 +106,7 @@ export function HighLowBoard({ G, moves }: Props) {
                 </span>
                 {G.payout > 0 && (
                   <span className="outcome-payout">
-                    +{G.payout.toLocaleString()} 🪙
+                    +{G.payout.toLocaleString()} 💎
                   </span>
                 )}
               </div>

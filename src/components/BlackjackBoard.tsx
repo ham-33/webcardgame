@@ -46,7 +46,7 @@ export function BlackjackBoard({ G, moves }: Props) {
     G.phase === "playing" &&
     G.player.length === 2 &&
     !G.doubled &&
-    useWallet.getState().coins >= G.bet;
+    useWallet.getState().gems >= G.bet;
 
   return (
     <div className="table blackjack-table">
@@ -90,13 +90,13 @@ export function BlackjackBoard({ G, moves }: Props) {
                 <span className="outcome-text">{outcome.text}</span>
                 {G.payout > 0 && (
                   <span className="outcome-payout">
-                    +{G.payout.toLocaleString()} 🪙
+                    +{G.payout.toLocaleString()} 💎
                   </span>
                 )}
               </div>
             )}
             {G.phase === "playing" && (
-              <div className="bet-chip-display">🪙 {G.bet.toLocaleString()}</div>
+              <div className="bet-chip-display">💎 {G.bet.toLocaleString()}</div>
             )}
           </div>
 

@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useWallet } from "../store/wallet";
 
-// 残高をカウントアップ演出つきで表示するバッジ
-export function CoinBadge() {
-  const coins = useWallet((s) => s.coins);
-  const [display, setDisplay] = useState(coins);
+// ジェム残高をカウントアップ演出つきで表示するバッジ
+export function GemBadge() {
+  const gems = useWallet((s) => s.gems);
+  const [display, setDisplay] = useState(gems);
   const raf = useRef<number>();
 
   useEffect(() => {
     const from = display;
-    const to = coins;
+    const to = gems;
     if (from === to) return;
     const start = performance.now();
     const dur = 600;
@@ -24,11 +24,11 @@ export function CoinBadge() {
       if (raf.current) cancelAnimationFrame(raf.current);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [coins]);
+  }, [gems]);
 
   return (
-    <div className="coin-badge" title="所持コイン">
-      <span className="coin-icon">🪙</span>
+    <div className="coin-badge" title="所持ジェム">
+      <span className="coin-icon">💎</span>
       <span className="coin-amount">{display.toLocaleString()}</span>
     </div>
   );

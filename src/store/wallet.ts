@@ -1,11 +1,12 @@
-// コイン残高・デイリーボーナス・ストリーク管理 (zustand + localStorage 永続化)
+// ジェム残高・デイリーボーナス・ストリーク管理 (zustand + localStorage 永続化)
+// ジェムは MARV CARD GAME 専用の独立通貨。Minecraft 内経済とは切り離されている。
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 export const DAILY_BASE = 500;
 export const DAILY_STREAK_STEP = 150;
 export const DAILY_STREAK_CAP = 7; // 7日目以降は最大額で固定
-export const STARTING_COINS = 2000;
+export const STARTING_GEMS = 2000;
 
 export function bonusForStreak(streak: number): number {
   const s = Math.min(Math.max(streak, 1), DAILY_STREAK_CAP);
@@ -24,7 +25,7 @@ function yesterdayKey(): string {
 }
 
 interface WalletState {
-  coins: number;
+  gems: number;
   lastClaimDate: string | null;
   streak: number;
   totalEarned: number;
@@ -40,7 +41,7 @@ interface WalletState {
 export const useWallet = create<WalletState>()(
   persist(
     (set, get) => ({
-      coins: STARTING_COINS,
+      gems: STARTING_GEMS,
       lastClaimDate: null,
       streak: 0,
       totalEarned: 0,
@@ -56,7 +57,7 @@ export const useWallet = create<WalletState>()(
         const newStreak = continued ? st.streak + 1 : 1;
         const amount = bonusForStreak(newStreak);
         set({
-          coins: st.coins + amount,
+          gems: st.gems + amount,
           lastClaimDate: todayKey(),
           streak: newStreak,
           totalEarned: st.totalEarned + amount,
@@ -66,15 +67,15 @@ export const useWallet = create<WalletState>()(
 
       spend: (amount) => {
         const st = get();
-        if (amount <= 0 || st.coins < amount) return false;
-        set({ coins: st.coins - amount });
+        if (amount <= 0 || st.gems < amount) return false;
+        set({ gems: st.gems - amount });
         return true;
       },
 
       earn: (amount) => {
         if (amount <= 0) return;
         set((st) => ({
-          coins: st.coins + amount,
+          gems: st.gems + amount,
           totalEarned: st.totalEarned + amount,
         }));
       },
@@ -86,6 +87,18 @@ export const useWallet = create<WalletState>()(
         }));
       },
     }),
-    { name: "neondeck-wallet" }
+    {
+      name: "marv-wallet",
+      // 旧 NEON DECK 時代の保存データ(coins)からの移行
+      migrate: (persisted: unknown) => {
+        const p = persisted as Record<string, unknown> | undefined;
+        if (p && typeof p === "object" && "coins" in p && !("gems" in p)) {
+          p.gems = p.coins;
+          delete p.coins;
+        }
+        return p as never;
+      },
+      version: 1,
+    }
   )
 );
